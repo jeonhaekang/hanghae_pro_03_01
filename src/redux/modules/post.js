@@ -11,6 +11,7 @@ import {
   limit,
   startAt,
   getDoc,
+  increment,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -18,8 +19,18 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
+import {
+  getDatabase,
+  ref as reref,
+  onValue,
+  child,
+  update,
+  set,
+  push,
+} from "firebase/database";
 import { db } from "../../share/firebase";
 import moment from "moment";
+
 // action
 const POST_LOAD = "POST_LOAD";
 const POST_SET = "POST_SET";
@@ -53,6 +64,24 @@ const initialPost = {
 };
 
 // middlewares
+export const likeFB = (post_id, state = false, like_cnt) => {
+  return function (dispatch, getState, { history }) {
+    const user = getState().user.user.uid;
+
+    const redb = getDatabase();
+    const dbRef = reref(redb, `like/${post_id}/${user}`);
+
+    set(dbRef, {
+      state: !state,
+    }).then(() => {
+      const postDoc = doc(db, "post", post_id);
+      updateDoc(postDoc, { like_cnt: increment(state ? -1 : 1) }).then(() => {
+        dispatch(postEdit(post_id, { like_cnt: like_cnt + (state ? -1 : 1) }));
+      });
+    });
+  };
+};
+
 export const getOnePostFB = (id) => {
   return async function (dispatch, getState, { history }) {
     const postDoc = doc(db, "post", id);
@@ -253,7 +282,6 @@ export default handleActions(
         let idx = draft.list.findIndex((el) => {
           return el.id === action.payload.post_id;
         });
-        console.log(idx, action.payload.content);
         draft.list[idx] = { ...draft.list[idx], ...action.payload.content };
       }),
     [LOADING]: (state, action) =>
@@ -270,6 +298,7 @@ const actionCreators = {
   editFB,
   getOnePostFB,
   postEdit,
+  likeFB,
 };
 
 export { actionCreators };

@@ -15,7 +15,12 @@ const Input = (props) => {
   } = props;
   if (testArea) {
     return (
-      <TextAreaEl rows={10} onChange={_onChange} value={value}></TextAreaEl>
+      <TextAreaEl
+        rows={10}
+        onKeyUp={_onKeyUp}
+        onChange={_onChange}
+        value={value}
+      ></TextAreaEl>
     );
   }
   return (

@@ -38,7 +38,7 @@ function App() {
           </ConnectedRouter>
         </Grid>
       </ContentWrap>
-      <Permit>
+      {/* <Permit>
         <Button
           shape="edit"
           _onClick={() => {
@@ -47,7 +47,7 @@ function App() {
         >
           +
         </Button>
-      </Permit>
+      </Permit> */}
     </Wrap>
   );
 }

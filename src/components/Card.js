@@ -1,12 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import { IoHeart } from "react-icons/io5";
+import React, { useState } from "react";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
 
 import { Grid, Image, Text, Button, Layout } from "../elements/Index";
-import { useSelector } from "react-redux";
+import Permit from "../share/Permit";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
+import { likeFB } from "../redux/modules/post";
+import { getDatabase, ref, onValue, update } from "firebase/database";
 
 const Card = (props) => {
+  const dispatch = useDispatch();
+  const [like, setLike] = useState(false);
   const {
     id,
     image_url,
@@ -18,8 +22,31 @@ const Card = (props) => {
     layout,
   } = props;
 
+  let user = useSelector((state) => state.user.user);
+
   let login_user = useSelector((state) => state.user.user);
   login_user = login_user !== null ? login_user.uid : login_user;
+  
+  React.useEffect(() => {
+    if (user?.uid) {
+      const db = getDatabase();
+      const likeRef = ref(db, `like/${id}/${user.uid}`);
+
+      onValue(likeRef, (snapshot) => {
+        if (snapshot.val()) {
+          setLike(snapshot.val()?.state);
+        } else {
+          update(likeRef, { state: false });
+        }
+      });
+    } else {
+      return false;
+    }
+  }, [user]);
+
+  const likeAction = () => {
+    dispatch(likeFB(id, like, like_cnt));
+  };
 
   return (
     <Grid border="1px solid #cbcbcb " padding="15px" margin="30px 0" bg="white">
@@ -40,16 +67,24 @@ const Card = (props) => {
         </Grid>
       </Grid>
 
-      <Layout content={contents} preview={image_url} layout={layout} />
+      <Grid
+        _onClick={() => {
+          history.push(`/detail/${id}`);
+        }}
+      >
+        <Layout content={contents} preview={image_url} layout={layout} />
+      </Grid>
 
       <Grid is_flex>
         <Grid is_flex width="auto">
           <Text margin="5px">좋아요 {like_cnt}</Text>
           <Text margin="5px">덧글 {comment_cnt}</Text>
         </Grid>
-        <Button shape="heart">
-          <IoHeart />
-        </Button>
+        <Permit>
+          <Button _onClick={likeAction} shape="heart">
+            {like ? <IoHeart /> : <IoHeartOutline />}
+          </Button>
+        </Permit>
       </Grid>
     </Grid>
   );

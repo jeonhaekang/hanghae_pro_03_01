@@ -30,9 +30,6 @@ const Main = (props) => {
           return (
             <Grid
               key={i}
-              _onClick={() => {
-                history.push(`/detail/${post.id}`);
-              }}
             >
               <Card {...post} />
             </Grid>

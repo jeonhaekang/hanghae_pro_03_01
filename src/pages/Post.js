@@ -10,6 +10,7 @@ const Post = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
   const preview = useSelector((state) => state.image.preview);
+
   const is_edit = props.match.params.id;
 
   let _post = useSelector((state) => state.post.list).find(
@@ -18,8 +19,15 @@ const Post = (props) => {
 
   const [layout, setLayout] = useState("bottom");
   const [content, setContent] = React.useState(_post ? _post.contents : "");
+  const [loginCheck, setLogin] = React.useState(true);
 
   React.useEffect(() => {
+    if (content !== "" && preview) {
+      setLogin(false);
+    } else {
+      setLogin(true);
+    }
+
     if (is_edit && !_post) {
       console.log("포스트 정보가 없어요!");
       history.goBack();
@@ -30,7 +38,7 @@ const Post = (props) => {
     if (is_edit) {
       dispatch(imageActions.setPreivew(_post.image_url));
     }
-  }, []);
+  }, [preview, content]);
 
   const postSet = () => {
     console.log("작성");
@@ -75,7 +83,12 @@ const Post = (props) => {
             게시글 수정
           </Button>
         ) : (
-          <Button _onClick={postSet} width="100%" padding="10px">
+          <Button
+            disabled={loginCheck}
+            _onClick={postSet}
+            width="100%"
+            padding="10px"
+          >
             게시글 작성
           </Button>
         )}

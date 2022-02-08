@@ -10,6 +10,7 @@ import NotiBadge from "../components/NotiBadge";
 const Header = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
+  const login_user = useSelector((state) => state.user.user);
 
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
@@ -23,7 +24,6 @@ const Header = (props) => {
               갱얼쥐클럽
             </Text>
           </Grid>
-
           <Grid width="auto">
             <NotiBadge _onClick={() => history.push("/alert")}></NotiBadge>
 
