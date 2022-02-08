@@ -8,11 +8,11 @@ import { Grid, Button } from "../elements/Index";
 import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { actionCreators as userAction } from "../redux/modules/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { apiKey } from "./firebase";
-import Permit from "./Permit";
 
 function App() {
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
@@ -22,7 +22,7 @@ function App() {
     if (is_session) {
       dispatch(userAction.loginCheckFB());
     }
-  });
+  }, []);
   return (
     <Wrap>
       <Header />
@@ -38,16 +38,6 @@ function App() {
           </ConnectedRouter>
         </Grid>
       </ContentWrap>
-      {/* <Permit>
-        <Button
-          shape="edit"
-          _onClick={() => {
-            history.push("/post");
-          }}
-        >
-          +
-        </Button>
-      </Permit> */}
     </Wrap>
   );
 }
