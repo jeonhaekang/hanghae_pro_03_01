@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src } = props;
+  const { shape, src, width } = props;
   const styles = {
     src: src,
+    width: width,
   };
   if (shape === "rectangle") {
     return (
-      <AspectOutter>
+      <AspectOutter {...styles}>
         <AspectInner {...styles}></AspectInner>
       </AspectOutter>
     );
@@ -18,6 +19,7 @@ const Image = (props) => {
 };
 
 Image.defaultProps = {
+  width: "100%",
   shape: "rectangle",
   src: "https://t1.daumcdn.net/liveboard/linkagelab/f0a375712a0946dabbbea47372a4c1d4.jpg",
 };
@@ -32,8 +34,8 @@ const CircleImage = styled.div`
 `;
 
 const AspectOutter = styled.div`
-  width: 100%;
-  min-width: 250px;
+  width: ${(props) => props.width};
+  
 `;
 
 const AspectInner = styled.div`

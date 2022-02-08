@@ -5,6 +5,7 @@ import { history } from "../redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { apiKey } from "./firebase";
+import NotiBadge from "../components/NotiBadge";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -12,34 +13,20 @@ const Header = (props) => {
 
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
-  console.log(_session_key);
-  console.log(is_session);
 
   if (is_login && is_session) {
     return (
       <HeaderBox>
         <Grid is_flex padding="10px" border="1px solid #cbcbcb -bottom">
-          <Grid width="auto">
+          <Grid width="auto" _onClick={() => history.push("/")}>
             <Text size="25px" margin="0">
               갱얼쥐클럽
             </Text>
           </Grid>
 
           <Grid width="auto">
-            <Button
-              padding="10px"
-              margin="5px"
-              _onClick={() => history.push("/signup")}
-            >
-              내정보
-            </Button>
-            <Button
-              padding="10px"
-              margin="5px"
-              _onClick={() => history.push("/login")}
-            >
-              알림
-            </Button>
+            <NotiBadge _onClick={() => history.push("/alert")}></NotiBadge>
+
             <Button
               padding="10px"
               margin="5px"

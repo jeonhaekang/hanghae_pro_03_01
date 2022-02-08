@@ -32,6 +32,7 @@ const Signup = (props) => {
       <Text size="30px">회원가입</Text>
       <Grid>
         <Input
+          value={id}
           placeholder="아이디를 입력해주세요."
           _onChange={(e) => changeId(e.target.value)}
           label="아이디"
@@ -39,6 +40,7 @@ const Signup = (props) => {
       </Grid>
       <Grid margin="20px 0">
         <Input
+          value={name}
           placeholder="닉네임을 입력해주세요."
           _onChange={(e) => chagneName(e.target.value)}
           label="닉네임"
@@ -46,6 +48,7 @@ const Signup = (props) => {
       </Grid>
       <Grid margin="20px 0">
         <Input
+          value={pwd}
           type="password"
           placeholder="패스워드를 입력해주세요."
           _onChange={(e) => chagnePwd(e.target.value)}
@@ -54,6 +57,7 @@ const Signup = (props) => {
       </Grid>
       <Grid margin="20px 0">
         <Input
+          value={pwdCheck}
           type="password"
           placeholder="패스워드를 다시 입력해주세요."
           _onChange={(e) => chagnePwdCheck(e.target.value)}

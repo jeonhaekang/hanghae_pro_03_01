@@ -2,7 +2,8 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const Button = (props) => {
-  const { shape, width, margin, padding, bg, children, _onClick } = props;
+  const { shape, width, margin, padding, bg, children, _onClick, disabled } =
+    props;
 
   const styles = {
     width: width,
@@ -26,7 +27,7 @@ const Button = (props) => {
   }
 
   return (
-    <ButtonEl onClick={_onClick} {...styles}>
+    <ButtonEl disabled={disabled} onClick={_onClick} {...styles}>
       {children}
     </ButtonEl>
   );
@@ -39,6 +40,7 @@ Button.defaultProps = {
   bg: false,
   shape: "rectangle",
   _onClick: () => {},
+  disabled: false,
 };
 
 const HeartButton = styled.button`

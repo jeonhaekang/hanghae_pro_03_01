@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 import { history } from "../redux/configureStore";
 
 import Header from "./Header";
-import { Main, Login, Signup, Post, Detail } from "../pages/index";
+import { Main, Login, Signup, Post, Detail, Alert } from "../pages/index";
 import { Grid, Button } from "../elements/Index";
 import { ConnectedRouter } from "connected-react-router";
 import React from "react";
@@ -32,8 +32,9 @@ function App() {
             <Route path="/" component={Main} exact />
             <Route path="/login" component={Login} exact />
             <Route path="/signup" component={Signup} exact />
-            <Route path="/detail" component={Detail} exact />
-            <Route path="/post" component={Post} exact />
+            <Route path="/detail/:id?" component={Detail} exact />
+            <Route path="/post/:id?" component={Post} exact />
+            <Route path="/alert" component={Alert} exact />
           </ConnectedRouter>
         </Grid>
       </ContentWrap>

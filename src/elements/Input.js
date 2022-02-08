@@ -3,17 +3,35 @@ import styled from "styled-components";
 import { Grid, Text } from "../elements/Index";
 
 const Input = (props) => {
-  const { testArea, label, placeholder, _onChange, type } = props;
+  const {
+    _onKeyUp,
+    testArea,
+    label,
+    placeholder,
+    _onChange,
+    type,
+    value,
+    onSubmit,
+  } = props;
   if (testArea) {
-    return <TextAreaEl rows={10}></TextAreaEl>;
+    return (
+      <TextAreaEl rows={10} onChange={_onChange} value={value}></TextAreaEl>
+    );
   }
   return (
     <Grid>
-      <Text margin="5px 0">{label}</Text>
+      {label ? <Text margin="5px 0">{label}</Text> : ""}
       <InputEl
+        value={value}
+        onKeyUp={_onKeyUp}
         type={type}
         onChange={_onChange}
         placeholder={placeholder}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            onSubmit(e);
+          }
+        }}
       ></InputEl>
     </Grid>
   );
@@ -24,6 +42,9 @@ Input.defaultProps = {
   placeholder: "",
   _onChange: () => {},
   type: "test",
+  value: "",
+  onSubmit: () => {},
+  _onKeyUp: () => {},
 };
 
 const InputEl = styled.input`
